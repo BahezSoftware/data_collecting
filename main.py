@@ -1,20 +1,35 @@
 import requests
 import pandas as pd
-url = "https://jsonplaceholder.typicode.com/users"
-response = requests.get(url).json()
-# print(response.status_code)
-# users=response.json()
-# # print(users[0]['id'])  # Print the ID of the first user
-# # for use in users:
-# #     print(use['name'])  # Print the name of each user
-# #     print(use['email'])  # Print the email of each user
-# #     print(use['address']['city'])  # Print the city of each user's address
-# result=pd.DataFrame(users)  # Convert the list of users to a DataFrame
-# print(result)  # Print the DataFrame
-df = pd.DataFrame(response)  # Convert the list of users to a DataFrame
 
-print(df)
-df.to_csv('users.csv', index=False)  # Save the DataFrame to a CSV file
-print("Data saved to users.csv")  # Print a message indicating that the data has been saved
-df.to_excel('users.xlsx', index=False)  # Save the DataFrame to an Excel file
-print("Data saved to users.xlsx")  # Print a message indicating that the data has been
+url = "https://api.coingecko.com/api/v3/coins/markets"
+
+params = {
+    "vs_currency": "usd",
+    "order": "market_cap_desc",
+    "per_page": 20,
+    "page": 1
+}
+
+response = requests.get(url, params=params).json()
+df = pd.DataFrame(response)
+# print(df)
+coins = df[
+    [
+        "name",
+        "symbol",
+        "current_price",
+        "market_cap",
+        "price_change_percentage_24h"
+    ]
+]
+
+print(coins)
+expensive = coins[coins["current_price"] > 1000]
+
+print(expensive)
+sorted_df = coins.sort_values(
+    by="current_price",
+    ascending=False
+)
+
+print(sorted_df)
