@@ -1,27 +1,46 @@
 import requests
 import pandas as pd
 import numpy as np
+import pandas as pd
 
-sales = np.array([120, 150, 180, 210, 175])
+# Load customer data
+customers = pd.read_csv("customers.csv")
 
-print(sales)
-np.mean(sales)
-np.median(sales)
-random_sales = np.random.randint(100, 1000, 10)
-print(random_sales)
-sales = np.random.randint(500, 5000, 30)
+# Invalid ages
+invalid_age = customers[
+    (customers["age"] < 0) |
+    (customers["age"] > 120)
+]
 
-print("Daily Sales")
-print(sales)
+# Duplicate IDs
+duplicates = customers[
+    customers.duplicated(
+        subset="id",
+        keep=False
+    )
+]
 
-print("\nAverage Sales")
-print(np.mean(sales))
+# Invalid emails
+invalid_email = customers[
+    ~customers["email"].str.contains(
+        r"^[\w\.-]+@[\w\.-]+\.\w+$",
+        regex=True
+    )
+]
 
-print("\nHighest Sale")
-print(np.max(sales))
+# Invalid phone numbers
+invalid_phone = customers[
+    ~customers["phone"].str.match(r"^07\d{9}$")
+]
 
-print("\nLowest Sale")
-print(np.min(sales))
+print("Invalid Ages")
+print(invalid_age)
 
-print("\nMedian Sale")
-print(np.median(sales))
+print("Duplicate IDs")
+print(duplicates)
+
+print("Invalid Emails")
+print(invalid_email)
+
+print("Invalid Phones")
+print(invalid_phone)
