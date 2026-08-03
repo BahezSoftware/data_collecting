@@ -1,35 +1,27 @@
 import requests
 import pandas as pd
+import numpy as np
 
-url = "https://api.coingecko.com/api/v3/coins/markets"
+sales = np.array([120, 150, 180, 210, 175])
 
-params = {
-    "vs_currency": "usd",
-    "order": "market_cap_desc",
-    "per_page": 20,
-    "page": 1
-}
+print(sales)
+np.mean(sales)
+np.median(sales)
+random_sales = np.random.randint(100, 1000, 10)
+print(random_sales)
+sales = np.random.randint(500, 5000, 30)
 
-response = requests.get(url, params=params).json()
-df = pd.DataFrame(response)
-# print(df)
-coins = df[
-    [
-        "name",
-        "symbol",
-        "current_price",
-        "market_cap",
-        "price_change_percentage_24h"
-    ]
-]
+print("Daily Sales")
+print(sales)
 
-print(coins)
-expensive = coins[coins["current_price"] > 1000]
+print("\nAverage Sales")
+print(np.mean(sales))
 
-print(expensive)
-sorted_df = coins.sort_values(
-    by="current_price",
-    ascending=False
-)
+print("\nHighest Sale")
+print(np.max(sales))
 
-print(sorted_df)
+print("\nLowest Sale")
+print(np.min(sales))
+
+print("\nMedian Sale")
+print(np.median(sales))
